@@ -18,7 +18,6 @@ It is designed to work according to the QUIET tools interface, Version 0.2.
 
 import random
 
-#pass in list of countries, list of corresponding properties, <, >, =
 def can_move(s, flag):
     if(flag == "joint military training"):
         return s.countries['USA']['economy'] > 70 and s.countries['SK']['economy'] > 70
@@ -32,17 +31,9 @@ def can_move(s, flag):
     elif(flag == "submarines"):
         return s.countries['USA']['military'] > 50 and s.countries['USA']['hostility'] > 50 \
                and s.countries['NK']['dictator'] > 70
-    elif(flag == "funding"):
+    elif(flag == "sanction"):
+        return True
 
-
-
-
-    try:
-        board = s.board
-        return ((abs(From - To) == 1 or abs(From - To) == 3) and \
-                (board[From] != 0 and board[To] == 0))
-    except (Exception) as e:
-        print(e)
 
 
 # specify the property to be changed as the parameter,
