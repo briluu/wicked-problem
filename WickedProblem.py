@@ -47,12 +47,32 @@ def can_move(s, flag):
 
 # specify the property to be changed as the parameter,
 # i.e specific country, specific property, numbers to go down/up
-def move(s, From, To):
-    news = s.__copy__()
-    board2 = news.board
-    board2[To] = board2[From]
-    board2[From] = 0
-    return news
+def move(s, flag):
+    new_s = s.__copy__()
+    if(flag == "joint military training"):
+        # return s.countries['USA']['economy'] > 70 and s.countries['SK']['economy'] > 70
+        new_s.countries['USA']['military'] += 1
+        new_s.countries['USA']['economy'] -= 1
+        new_s.countries['SK']['military'] += 1
+        new_s.countries['SK']['economy'] -= 1
+    elif(flag == "change ruling party"):
+        # curr = s.q[0];
+        # [ ['usa', 'sk', 'etc'] ['sk', 'usa', '4'] ]
+        # party = ['left', 'right']
+        # num = random.randint(0,1)
+        # return s.countries[curr]['party'] != party[num]
+
+    elif(flag == "nk missle"):
+        new_s.countries['SK']['hostility'] += 20
+        if new_s.countries['SK']['hostility'] > 100:
+            new_s.countries['SK']['hostility'] = 100
+    elif(flag == "submarines"):
+        new_s.countries['NK']['dictator'] += 10
+        if new_s.countries['NK']['dictator'] > 100:
+            new_s.countries['SK']['hostility'] = 100
+    elif(flag == "sanction"):
+
+    return new_s
 
 #not required
 # def goal_test(s):
