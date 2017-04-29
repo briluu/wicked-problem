@@ -1,6 +1,6 @@
-#Siying Li, 1238928
-#Chiho Kim, 0963203
-#Brian Luu
+#Siying Li, Chiho Kim, Brian Luu
+#North Korea nuclear standoff
+#Status: everything implemented
 #HW4, Wicked Problem
 
 #<METADATA>
@@ -178,11 +178,27 @@ def HOSTILITY(countries, hostility):
 
 #<OPERATORS>
 # create each operator as a own instance,
-move_combination = [(x,y) for x in range(0,9) for y in range(0,9)]
-OPERATORS =[Operator("Move from index " + str(x) + " to index " + str(y), \
-                     lambda s, x1=x, y1=y: can_move(s, x1,y1),\
-                     lambda s, x1=x, y1=y: move(s, x1, y1))\
-            for(x,y) in move_combination]
+
+OPERATOR = [Operator("USA-SK joint military training", \
+                     lambda s: can_move(s, "joint military training"),
+                     lambda s: move(s, "joint military training")),\
+            Operator("Change in ruling party", \
+                     lambda s: can_move(s, "change ruling party"), \
+                     lambda s: move(s, "change ruling party")), \
+            Operator("NK fires missles at SK", \
+                     lambda s: can_move(s, "nk missile"), \
+                     lambda s: move(s, "nk missile")), \
+            Operator("USA submarines surround NK", \
+                     lambda s: can_move(s, "submarines"), \
+                     lambda s: move(s, "submarines")), \
+            Operator("Sanctions on NK change", \
+                     lambda s: can_move(s, "sanction"), \
+                     lambda s: move(s, "sanction"))]
+# move_combination = [(x,y) for x in range(0,9) for y in range(0,9)]
+# OPERATORS =[Operator("Move from index " + str(x) + " to index " + str(y), \
+#                      lambda s, x1=x, y1=y: can_move(s, x1,y1),\
+#                      lambda s, x1=x, y1=y: move(s, x1, y1))\
+#             for(x,y) in move_combination]
 
 #<GOAL_MESSAGE_FUNCTION>
 GOAL_MESSAGE_FUNCTION = lambda s: goal_message(s)
