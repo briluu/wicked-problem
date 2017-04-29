@@ -15,7 +15,6 @@ uses generic Python 3 constructs and has been tested with Python 3.4.
 It is designed to work according to the QUIET tools interface, Version 0.2.
 '''
 #</METADATA>
-
 import random
 
 def can_move(s, flag):
@@ -31,38 +30,18 @@ def can_move(s, flag):
     elif(flag == "submarines"):
         return s.countries['USA']['military'] > 50 and s.countries['USA']['hostility'] > 50 \
                and s.countries['NK']['dictator'] > 70
-    elif(flag == "sanction"):
-        return True
-
-
+    elif(flag == "funding"):
+        return
 # specify the property to be changed as the parameter,
 # i.e specific country, specific property, numbers to go down/up
-def move(s, flag):
-    new_s = s.__copy__()
-    if(flag == "joint military training"):
-        # return s.countries['USA']['economy'] > 70 and s.countries['SK']['economy'] > 70
-        new_s.countries['USA']['military'] += 1
-        new_s.countries['USA']['economy'] -= 1
-        new_s.countries['SK']['military'] += 1
-        new_s.countries['SK']['economy'] -= 1
-    elif(flag == "change ruling party"):
-        # curr = s.q[0];
-        # [ ['usa', 'sk', 'etc'] ['sk', 'usa', '4'] ]
-        # party = ['left', 'right']
-        # num = random.randint(0,1)
-        # return s.countries[curr]['party'] != party[num]
-
-    elif(flag == "nk missle"):
-        new_s.countries['SK']['hostility'] += 20
-        if new_s.countries['SK']['hostility'] > 100:
-            new_s.countries['SK']['hostility'] = 100
-    elif(flag == "submarines"):
-        new_s.countries['NK']['dictator'] += 10
-        if new_s.countries['NK']['dictator'] > 100:
-            new_s.countries['SK']['hostility'] = 100
-    elif(flag == "sanction"):
-
-    return new_s
+'''
+def move(s, From, To):
+    news = s.__copy__()
+    board2 = news.board
+    board2[To] = board2[From]
+    board2[From] = 0
+    return news
+'''
 
 #not required
 # def goal_test(s):
@@ -142,13 +121,10 @@ def CREATE_INITIAL_STATE():
     SK = CREATE_COUNTRY(SK, 90, 0, 52, False, 60, 'right' )
     countries['SK'] = SK
     Japan = {}
-    Japan = CREATE_COUNTRY(Japan, 50, 0, 73, False, 60, 'right' )
+    Japan = CREATE_COUNTRY(Japan, 71, 0, 73, False, 60, 'right' )
     countries['Japan'] = Japan
-    q = []
-    vote = ['USA', 'China', 'South Korea', 'Japan']
-    q.append(vote)
-    hostility = []
-    hostility = HOSTILITY(countries, hostility)
+    q = ['USA', 'China', 'South Korea', 'Japan']
+    print(HOSTILITY(countries))
     return State(countries, q)
 
 #</INITIAL_STATE>
@@ -162,15 +138,18 @@ def CREATE_COUNTRY(country, h, n, m, s, e, p):
     country['party'] = p
     return country
 
-def HOSTILITY(countries, hostility):
-    del hostility[:]
-    hostility.append(countries['USA']['hostility'])
-    hostility.append(countries['Russia']['hostility'])
-    hostility.append(countries['China']['hostility'])
-    hostility.append(countries['SK']['hostility'])
-    hostility.append(countries['Japan']['hostility'])
-    hostility.sort();
-    return hostility
+def HOSTILITY(countries):
+    others = ['USA', 'Russia', 'China', 'SK', 'Japan']
+    result = []
+    while len(others) > 0:
+        min = others[0]
+        for i in range(len(others)):
+            current = others[i]
+            if countries[current]['hostility'] < countries[min]['hostility']:
+                min = current
+        others.remove(min)
+        result.append(min)
+    return result
 
 #<GOAL_TEST>
 # GOAL_TEST = lambda s: goal_test(s)
@@ -192,5 +171,4 @@ GOAL_MESSAGE_FUNCTION = lambda s: goal_message(s)
 HEURISTICS = [h1]
 #</HEURISTICS>
 
-print(CREATE_INITIAL_STATE())
-
+print(CREATE_INITIAL_STATE().q)
