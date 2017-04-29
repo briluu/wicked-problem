@@ -1,5 +1,5 @@
 #Siying Li, 1238928
-#Chiho Kim
+#Chiho Kim, 0963203
 #Brian Luu
 #HW4, Wicked Problem
 
@@ -43,7 +43,7 @@ def can_move(s, flag):
                 (board[From] != 0 and board[To] == 0))
     except (Exception) as e:
         print(e)
-
+'''
 
 # specify the property to be changed as the parameter,
 # i.e specific country, specific property, numbers to go down/up
@@ -111,13 +111,56 @@ class State():
         return news
 #</STATE>
 
+
 #<INITIAL_STATE>
-# INITIAL_STATE = State([1, 4, 2, 3, 7, 0, 6, 8, 5])
-# CREATE_INITIAL_STATE = lambda: INITIAL_STATE
-# Need to fill in
 def CREATE_INITIAL_STATE():
-    pass
+    countries = {}
+    USA = {}
+    USA = CREATE_COUNTRY(USA, 90, 94, 94, False, 91, 'right')
+    countries['USA'] = USA
+    Russia = {}
+    Russia = CREATE_COUNTRY(Russia, 60, 96, 80, False, 55, 'right')
+    countries['Russia'] = Russia
+    China = {}
+    China = CREATE_COUNTRY(China, 24, 10, 79, False, 83, 'left')
+    countries['China'] = China
+    NK = {}
+    NK = CREATE_COUNTRY(NK, 0, 8, 30, False, 9, 'right')
+    NK['dictator'] = 90
+    countries['NK'] = NK
+    SK = {}
+    SK = CREATE_COUNTRY(SK, 90, 0, 52, False, 60, 'right' )
+    countries['SK'] = SK
+    Japan = {}
+    Japan = CREATE_COUNTRY(Japan, 50, 0, 73, False, 60, 'right' )
+    countries['Japan'] = Japan
+    q = []
+    vote = ['USA', 'China', 'South Korea', 'Japan']
+    q.append(vote)
+    hostility = []
+    hostility = HOSTILITY(countries, hostility)
+    return State(countries, q)
+
 #</INITIAL_STATE>
+
+def CREATE_COUNTRY(country, h, n, m, s, e, p):
+    country['hostility'] = h
+    country['nuclear'] = n
+    country['military'] = m
+    country['sanction'] = s
+    country['economy'] = e
+    country['party'] = p
+    return country
+
+def HOSTILITY(countries, hostility):
+    del hostility[:]
+    hostility.append(countries['USA']['hostility'])
+    hostility.append(countries['Russia']['hostility'])
+    hostility.append(countries['China']['hostility'])
+    hostility.append(countries['SK']['hostility'])
+    hostility.append(countries['Japan']['hostility'])
+    hostility.sort();
+    return hostility
 
 #<GOAL_TEST>
 # GOAL_TEST = lambda s: goal_test(s)
@@ -138,4 +181,6 @@ GOAL_MESSAGE_FUNCTION = lambda s: goal_message(s)
 #<HEURISTICS> (optional)
 HEURISTICS = [h1]
 #</HEURISTICS>
+
+print(CREATE_INITIAL_STATE())
 
