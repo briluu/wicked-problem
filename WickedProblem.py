@@ -15,10 +15,27 @@ uses generic Python 3 constructs and has been tested with Python 3.4.
 It is designed to work according to the QUIET tools interface, Version 0.2.
 '''
 #</METADATA>
-'''
+
+import random
+
 #pass in list of countries, list of corresponding properties, <, >, =
-def can_move(s, From, flag):
-    if(flag == "miliaty trianion"):
+def can_move(s, flag):
+    if(flag == "joint military training"):
+        return s.countries['USA']['economy'] > 70 and s.countries['SK']['economy'] > 70
+    elif(flag == "change ruling party"):
+        curr = s.q[0];
+        party = ['left', 'right']
+        num = random.randint(0,1)
+        return s.countries[curr]['party'] != party[num]
+    elif(flag == "nk missle"):
+        return s.countries['NK']['military'] > 70 and s.countries['NK']['dictator'] > 50
+    elif(flag == "submarines"):
+        return s.countries['USA']['military'] > 50 and s.countries['USA']['hostility'] > 50 \
+               and s.countries['NK']['dictator'] > 70
+    elif(flag == "funding"):
+
+
+
 
     try:
         board = s.board
@@ -67,23 +84,30 @@ def h1(state):
 
 #<STATE>
 class State():
-    def __init__(self, board):
-        self.board = board
+    def __init__(self, countries, q):
+        self.countries = countries
+        self.q = q
 
+    # need to change later
     def __str__(self):
-        board = self.board
-        return str(board)
+        countries = self.countries
+        q = self.q
+        return str(countries) + str(q)
 
     def __eq__(self, s2):
-        if not(type(self) == type(s2)) : return False
-        return self.board == s2.board
+        if not (type(self) == type(s2)): return False
+        countries1 = self.countries;
+        countries2 = s2.countries;
+        return countries1 == countries2
+
 
     def __hash__(self):
         return (str(self)).__hash__()
 
     def __copy__(self):
-        news = State([])
-        news.board = self.board[:]
+        news = State({})
+        news.countries = self.countries.copy();
+        news.q = self.q[:]
         return news
 #</STATE>
 
